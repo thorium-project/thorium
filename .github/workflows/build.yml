@@ -26,7 +26,6 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt update -y
-          sudo apt upgrade -y
           sudo apt install -y gn ninja-build ffmpeg libavformat-dev libavfilter-dev libavdevice-dev libavcodec-dev libffi-dev libgbm-dev libdrm-dev libwayland-egl1-mesa libnss3-dev patch pkgconf libva-dev libpulse-dev libpipewire-0.3-dev libffi-dev libelf-dev libc6-dev flex curl bison elfutils fakeroot gperf zstd mesa-common-dev libxkbcommon-dev libbluetooth-dev libvulkan-dev libcups2 libfreetype6 libfontconfig1
 
       - name: Install depot tools
