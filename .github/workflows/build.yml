@@ -15,10 +15,7 @@ jobs:
           echo "$PWD/depot_tools" >> $GITHUB_PATH
       - name: Checkout sources
         run: |
-          mkdir -p chromium && cd chromium
-          fetch --nohooks --nohistory chromium
-          cd src
-          gclient runhooks
+          gclient sync --no-history -j$(nproc) 
 
       - name: Build
         run: |
