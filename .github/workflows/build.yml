@@ -37,6 +37,7 @@ jobs:
       - name: Checkout sources
         run: |
           gclient sync --no-history -j$(nproc) 
+          gclient runhooks
 
       - name: Build
         run: |
