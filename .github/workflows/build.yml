@@ -1,0 +1,36 @@
+name: Build Thorium
+on:
+  workflow_dispatch:
+jobs:
+  build:
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - name: Install dependencies
+        run: sudo apt install gn ninja ffmpeg libavformat-dev libavfilter-dev libavdevice-dev libavcodec-dev libffi-dev libgbm-dev libdrm-dev libwayland-egl1-mesa libnss3-dev patch pkgconf libva-dev libpulse-dev libpipewire-0.3-dev libffi-dev libelf-dev libc6-dev flex curl bison elfutils fakeroot gperf zstd mesa-common-dev libxkbcommon-dev libbluetooth-dev libvulkan-dev libav-tools libcups2 libfreetype6 libfontconfig1
+      - name: Install depot tools
+        run: |
+          git clone --depth=1 https://chromium.googlesource.com/chromium/tools/depot_tools.git
+          echo "$PWD/depot_tools" >> $GITHUB_PATH
+      - name: Checkout sources
+        run: |
+          mkdir -p chromium && cd chromium
+          fetch --nohooks --nohistory chromium
+          cd src
+          gclient runhooks
+
+      - name: Build
+        run: |
+          cd src
+          mkdir -p out/Default
+          cp ../args.gn ./out/Default/args.gn
+          gn gen out/Default
+          autoninja -C out/Default chrome
+
+      - uses: actions/upload-artifact@v4
+        with:
+          path: |
+            out/Default/*.so
+            out/Default/*.a
+            out/Default/chrome
